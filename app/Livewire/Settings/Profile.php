@@ -21,6 +21,8 @@ class Profile extends Component
 
     public string $email = '';
 
+    public string $username = '';
+
     /**
      * Mount the component.
      */
@@ -28,6 +30,7 @@ class Profile extends Component
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->username = Auth::user()->username;
     }
 
     /**
