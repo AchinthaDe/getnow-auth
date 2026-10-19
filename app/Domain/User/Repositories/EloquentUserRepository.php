@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 final class EloquentUserRepository implements UserRepositoryInterface
 {
+    /** @return LengthAwarePaginator<int, User> */
     public function paginate(int $perPage = 15): LengthAwarePaginator
     {
         return User::query()->latest('id')->paginate($perPage);

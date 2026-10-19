@@ -14,6 +14,7 @@ final class UserService
 {
     public function __construct(private UserRepositoryInterface $users) {}
 
+    /** @return LengthAwarePaginator<int, User> */
     public function list(int $perPage = 15): LengthAwarePaginator
     {
         return $this->users->paginate($perPage);
