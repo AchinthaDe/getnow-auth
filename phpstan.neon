@@ -1,13 +1,22 @@
 includes:
     - vendor/larastan/larastan/extension.neon
     - vendor/nesbot/carbon/extension.neon
+    - vendor/pestphp/pest/extension.neon
+    - vendor/pestphp/pest/phpstan-pest-extension.neon
 
 parameters:
     paths:
         - app/
         - bootstrap/app.php
+        - bootstrap/providers.php
         - config/
         - database/
         - routes/
+        - tests/
 
     level: 7
+
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Pest\\PendingCalls\\TestCall::#'
+            path: tests/*
