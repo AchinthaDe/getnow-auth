@@ -253,15 +253,15 @@ Testing (Pest, PostgreSQL, factories, no SQLite):
 
 Open decisions (record as ADRs):
 
-| ID | Question | Owner |
-|---|---|---|
-| OQ1 | Which Passport grant issues the access and refresh pair after `AuthService` has verified credentials? Check what the installed Passport version supports before choosing. | Achintha |
-| OQ2 | Refresh token delivery: JSON body or httpOnly cookie. | Achintha |
-| OQ3 | Token lifetimes (access short, refresh longer). | Achintha |
-| OQ4 | Do tokens carry scopes per role, or is the role checked only in policies? | Both |
-| OQ5 | How does a retailer receive its first password: set by the superadmin, or an emailed set-password link? | Rathu with the senior |
-| OQ6 | Hard delete or soft delete for `destroy`. | Rathu with the senior |
-| OQ7 | Self-service profile endpoints (`/me`) for retailers and customers. | Senior |
+| ID | Question | Owner | Status / Decision |
+|---|---|---|---|
+| OQ1 | Which Passport grant issues the access and refresh pair after `AuthService` has verified credentials? Check what the installed Passport version supports before choosing. | Achintha | Decided: direct entity minting and rotation via `PassportTokenIssuer`. See `docs/adr/0001-passport-token-issuance-and-refresh-rotation.md`. |
+| OQ2 | Refresh token delivery: JSON body or httpOnly cookie. | Achintha | Decided: JSON body delivery (`data.tokens`). See `docs/adr/0001-passport-token-issuance-and-refresh-rotation.md`. |
+| OQ3 | Token lifetimes (access short, refresh longer). | Achintha | Decided: 900s access, 14d refresh via `config/passport.php`. See `docs/adr/0001-passport-token-issuance-and-refresh-rotation.md`. |
+| OQ4 | Do tokens carry scopes per role, or is the role checked only in policies? | Both | Decided: empty/default scopes, authorization enforced strictly via `UserPolicy`. See `docs/adr/0001-passport-token-issuance-and-refresh-rotation.md`. |
+| OQ5 | How does a retailer receive its first password: set by the superadmin, or an emailed set-password link? | Rathu with the senior | Open |
+| OQ6 | Hard delete or soft delete for `destroy`. | Rathu with the senior | Open |
+| OQ7 | Self-service profile endpoints (`/me`) for retailers and customers. | Senior | Open |
 
 ## 12. Merge plan into the GetNow main repository
 
