@@ -20,6 +20,13 @@ final class EloquentUserRepository implements UserRepositoryInterface
         return User::query()->findOrFail($id);
     }
 
+    public function findByIdentifier(string $identifier): ?User
+    {
+        $field = filter_var($identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        return User::query()->where($field, $identifier)->first();
+    }
+
     public function create(array $attributes): User
     {
         return User::query()->create($attributes);
