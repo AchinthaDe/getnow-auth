@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 use App\Domain\Accounts\Contracts\TokenIssuer;
 use App\Domain\Accounts\Data\TokenPairData;
+use App\Domain\Accounts\Tokens\PassportTokenIssuer;
 use App\Models\User;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Assert;
 
-beforeEach(function () {
-    app()->instance(TokenIssuer::class, Mockery::mock(TokenIssuer::class));
-});
-
 function tokenHandoffIssuer(): TokenIssuer&MockInterface
 {
-    $issuer = app(TokenIssuer::class);
+    $issuer = Mockery::mock(TokenIssuer::class);
 
-    if (! $issuer instanceof MockInterface) {
-        throw new LogicException('The test requires a mocked token issuer.');
+    if (! $issuer instanceof TokenIssuer) {
+        throw new LogicException('The mock must implement the token issuer contract.');
     }
+
+    app()->instance(TokenIssuer::class, $issuer);
 
     return $issuer;
 }
@@ -137,10 +135,6 @@ test('password login cannot bypass an enabled two factor challenge', function ()
         ->assertUnprocessable()->assertJsonValidationErrors('email');
 });
 
-test('no production token issuer binding is provided by the users track', function () {
-    app()->forgetInstance(TokenIssuer::class);
-    expect(app()->bound(TokenIssuer::class))->toBeFalse();
-    $this->withoutExceptionHandling();
-
-    $this->postJson('/api/v1/auth/login', ['email' => 'jane@example.com', 'password' => 'password']);
-})->throws(BindingResolutionException::class);
+test('the token owner provides the production issuer binding', function () {
+    expect(app(TokenIssuer::class))->toBeInstanceOf(PassportTokenIssuer::class);
+});
