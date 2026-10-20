@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\ThrottleRegistration;
+use App\Http\Middleware\ValidateAuthInput;
 use Laravel\Fortify\Features;
 
 return [
@@ -103,7 +105,7 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => ['web', ValidateAuthInput::class, ThrottleRegistration::class],
 
     /*
     |--------------------------------------------------------------------------
@@ -134,6 +136,10 @@ return [
     */
 
     'views' => true,
+
+    'paths' => [
+        'register' => '/registration',
+    ],
 
     /*
     |--------------------------------------------------------------------------

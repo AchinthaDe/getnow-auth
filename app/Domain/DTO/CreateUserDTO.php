@@ -13,6 +13,8 @@ final readonly class CreateUserDTO
         public string $email,
         public string $username,
         public string $password,
+        public ?string $address = null,
+        public ?string $mobile_phone = null,
     ) {}
 
     /**
@@ -30,6 +32,8 @@ final readonly class CreateUserDTO
             self::string($data, 'email'),
             self::string($data, 'username'),
             self::string($data, 'password'),
+            self::optionalString($data, 'address'),
+            self::optionalString($data, 'mobile_phone'),
         );
     }
 
@@ -47,7 +51,13 @@ final readonly class CreateUserDTO
         return $value;
     }
 
-    /** @return array{name: string, email: string, username: string, password: string} */
+    /** @param array<string, mixed> $data */
+    private static function optionalString(array $data, string $key): ?string
+    {
+        return isset($data[$key]) ? self::string($data, $key) : null;
+    }
+
+    /** @return array{name: string, email: string, username: string, password: string, address: string|null, mobile_phone: string|null} */
     public function toArray(): array
     {
         return [
@@ -55,6 +65,8 @@ final readonly class CreateUserDTO
             'email' => $this->email,
             'username' => $this->username,
             'password' => $this->password,
+            'address' => $this->address,
+            'mobile_phone' => $this->mobile_phone,
         ];
     }
 }
