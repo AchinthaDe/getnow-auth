@@ -4,31 +4,26 @@ declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
-use App\Concerns\PasswordValidationRules;
-use App\Concerns\ProfileValidationRules;
+use App\Concerns\ValidatesRegistration;
 use App\Domain\DTO\CreateUserDTO;
 use App\Domain\User\Services\UserService;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    use PasswordValidationRules, ProfileValidationRules;
+    use ValidatesRegistration;
 
     public function __construct(private UserService $users) {}
 
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array<string, string>  $input
+     * @param  array<string, mixed>  $input  Unvalidated registration request data.
      */
     public function create(array $input): User
     {
-        $validated = Validator::make($input, [
-            ...$this->profileRules(),
-            'password' => $this->passwordRules(),
-        ])->validate();
+        $validated = $this->validateRegistration($input);
 
         return $this->users->create(CreateUserDTO::fromArray($validated));
     }
