@@ -6,7 +6,7 @@
         <p>{{ __('A simpler way to get started. Join GetNow.') }}</p>
     </header>
 
-    @if (session('status'))
+    @if (session('status')) 
         <p class="login-status" role="status">{{ session('status') }}</p>
     @endif
 
