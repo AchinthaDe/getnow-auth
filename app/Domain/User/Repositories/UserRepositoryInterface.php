@@ -14,7 +14,7 @@ interface UserRepositoryInterface
 
     public function findOrFail(int $id): User;
 
-    /** @param array{name: string, email: string, username: string, password: string} $attributes */
+    /** @param array{name: string, email: string, username: string, password: string, address?: string|null, mobile_phone?: string|null} $attributes */
     public function create(array $attributes): User;
 
     /** @param array{name?: string, email?: string, username?: string, password?: string} $attributes */
